@@ -15,18 +15,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  pgadmin:
-    container_name: pgadmin4
-    image: dpage/pgadmin4
+  adminer:
+    container_name: postgres_adminer
+    image: adminer
     restart: always
     ports:
-      - 8888:80
+      - "8080:8080"
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-    volumes:
-      - pgadmin:/var/lib/pgadmin
+      ADMINER_DEFAULT_SERVER: db
   
 volumes:
   pgdata:
-  pgadmin:

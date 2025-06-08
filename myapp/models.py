@@ -3,7 +3,14 @@ import uuid
 from django.utils import timezone
 from django.conf import settings
 from django.urls import reverse
+from taggit.managers import TaggableManager
+from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
 
+
+class UUIDTaggedItem(GenericUUIDTaggedItemBase, TaggedItemBase):
+  class Meta:
+    verbose_name = "Tag"
+    verbose_name_plural = "Tags"
 class PublishedManager(models.Manager):
   def get_queryset(self):
     return (
@@ -34,6 +41,7 @@ class Post(models.Model):
   )
   objects = models.Manager() # The default manager.
   published = PublishedManager() # Our custom manager.
+  tags = TaggableManager(through=UUIDTaggedItem)
 
   class Meta:
     ordering = ['publish']
@@ -76,3 +84,4 @@ class Comment(models.Model):
     ]
   def __str__(self):
     return f'Comment by {self.name} on {self.post.title}'
+  
